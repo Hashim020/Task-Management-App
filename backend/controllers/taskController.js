@@ -1,18 +1,15 @@
-// controllers/taskController.js
 const Task = require('../models/Task');
 const Joi = require('joi');
 
-// Define Joi schema for task validation
 const taskSchema = Joi.object({
     title: Joi.string().required(),
     description: Joi.string().optional(),
     priority: Joi.string().valid('low', 'medium', 'high').default('low'),
     dueDate: Joi.date().optional(),
     status: Joi.string().valid('completed', 'incomplete').default('incomplete'),
-    assignees: Joi.array().items(Joi.string()).optional() // Assumes assignees are user IDs
+    assignees: Joi.array().items(Joi.string()).optional() 
 });
 
-// 1. Create Task
 exports.createTask = async (req, res) => {
     const { error, value } = taskSchema.validate(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
@@ -20,7 +17,7 @@ exports.createTask = async (req, res) => {
     try {
         const newTask = new Task({
             ...value,
-            createdBy: req.user._id // Assumes user ID is in req.user from auth middleware
+            createdBy: req.user._id 
         });
         const savedTask = await newTask.save();
         res.status(201).json(savedTask);
@@ -43,7 +40,6 @@ exports.updateTask = async (req, res) => {
     }
 };
 
-// 3. Delete Task
 exports.deleteTask = async (req, res) => {
     try {
         const deletedTask = await Task.findByIdAndDelete(req.params.id);
