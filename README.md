@@ -56,7 +56,7 @@ A scalable backend application for managing tasks, built with Node.js, Express, 
    Start the development server:
 
    ```bash
-   npm start
+   nodemon server.js
    ```
 
    Or, if you're using nodemon (installed globally), you can use:
